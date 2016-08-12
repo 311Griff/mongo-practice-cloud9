@@ -75,7 +75,24 @@
               console.log(count)
               db.close();
       })*/
-      
+      var $size = process.argv[2];
+      var collection = db.collection('prices');
+       collection.aggregate([
+           { $match: {size: $size}
+           },
+           {
+               $group: { 
+                    _id: "prices",
+                    average:
+                    {$avg: "$price"}
+               }
+           }
+           ]).toArray(function(err, results){
+               var avg = Number(results[0].average).toFixed(2);
+               if(err) throw err;
+               console.log(avg);
+               db.close();
+           });
       
        
     });
