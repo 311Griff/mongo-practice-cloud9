@@ -75,19 +75,15 @@
               console.log(count)
               db.close();
       })*/
+     //the below code will aggregate the averages of prices in the prices collection of the learnyoumongo db, and return it as a string with 2 decimal places.
       var $size = process.argv[2];
       var collection = db.collection('prices');
        collection.aggregate([
-           { $match: {size: $size}
-           },
-           {
-               $group: { 
-                    _id: "prices",
-                    average:
-                    {$avg: "$price"}
-               }
-           }
-           ]).toArray(function(err, results){
+           { $match: {size: $size}},
+           { $group: { _id: "prices",
+                        average:{$avg: "$price"}
+                    }
+           }]).toArray(function(err, results){
                var avg = Number(results[0].average).toFixed(2);
                if(err) throw err;
                console.log(avg);
